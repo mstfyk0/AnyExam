@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.Meditor.Queries.OrderQueries;
 using OrderApi.Application.Features.Meditor.Results.OrderResults;
 using OrderApi.Application.Interfaces;
@@ -21,13 +22,17 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
         {
             var values = await _repository.GetByIdAsync(request.Id);
 
-            return new GetOrderByIdQueryResult
+            if (values != null)
             {
-                OrderDate = values.OrderDate,
-                OrderId = values.OrderId,
-                TotalPrice = values.TotalPrice,
-                UserId = values.UserId,
-            };
+                return new GetOrderByIdQueryResult
+                {
+                    OrderDate = values.OrderDate,
+                    OrderId = values.OrderId,
+                    TotalPrice = values.TotalPrice,
+                    UserId = values.UserId,
+                };
+            }
+            throw new NotFoundIdException(request.Id);
         }
     }
 }

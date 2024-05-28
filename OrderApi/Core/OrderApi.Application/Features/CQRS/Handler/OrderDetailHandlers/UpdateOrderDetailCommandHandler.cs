@@ -1,4 +1,5 @@
-﻿using OrderApi.Application.Features.CQRS.Commands.OrderDetailCommands;
+﻿using OrderApi.Application.Exceptions;
+using OrderApi.Application.Features.CQRS.Commands.OrderDetailCommands;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
 using System;
@@ -24,14 +25,19 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         {
             var values = await _repository.GetByIdAsync(updateOrderDetailCommand.OrderDetailId);
 
-            values.ProductTotalPrice = updateOrderDetailCommand.ProductTotalPrice;
-            values.ProductPrice = updateOrderDetailCommand.ProductPrice;
-            values.ProductName = updateOrderDetailCommand.ProductName;
-            values.ProductId = updateOrderDetailCommand.ProductId;
-            values.OrderId = updateOrderDetailCommand.OrderId;
-            values.ProductAmount = updateOrderDetailCommand.ProductAmount;
-            _repository.Update(values);
-            await _unitOfWork.Commit();
+            if (values !=null)
+            {
+
+                values.ProductTotalPrice = updateOrderDetailCommand.ProductTotalPrice;
+                values.ProductPrice = updateOrderDetailCommand.ProductPrice;
+                values.ProductName = updateOrderDetailCommand.ProductName;
+                values.ProductId = updateOrderDetailCommand.ProductId;
+                values.OrderId = updateOrderDetailCommand.OrderId;
+                values.ProductAmount = updateOrderDetailCommand.ProductAmount;
+                _repository.Update(values);
+                await _unitOfWork.Commit();
+            }
+            throw new NotFoundIdException(updateOrderDetailCommand.OrderDetailId);
         }
     }
 }

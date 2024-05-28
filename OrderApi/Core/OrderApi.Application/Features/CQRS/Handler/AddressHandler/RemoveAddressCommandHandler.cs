@@ -1,4 +1,5 @@
-﻿using OrderApi.Application.Features.CQRS.Commands.AddressCommands;
+﻿using OrderApi.Application.Exceptions;
+using OrderApi.Application.Features.CQRS.Commands.AddressCommands;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
 using System;
@@ -24,8 +25,14 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
         public async Task Handle(RemoveAddressCommand removeAddressCommand)
         {
             var value = await _repository.GetByIdAsync(removeAddressCommand.Id);
-            _repository.Delete(value);
-            await _unitOfWork.Commit();
+            
+            if (value != null) 
+            { 
+                _repository.Delete(value);
+                await _unitOfWork.Commit();
+            }
+            throw new NotFoundIdException(removeAddressCommand.Id);
+
         }
     }
 }

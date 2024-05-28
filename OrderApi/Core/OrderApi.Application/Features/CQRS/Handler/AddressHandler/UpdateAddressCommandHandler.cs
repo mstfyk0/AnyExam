@@ -1,4 +1,5 @@
-﻿using OrderApi.Application.Features.CQRS.Commands.AddressCommands;
+﻿using OrderApi.Application.Exceptions;
+using OrderApi.Application.Features.CQRS.Commands.AddressCommands;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
 
@@ -19,12 +20,18 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
         public async Task Handle(UpdateAddressCommand updateAddressCommand)
         {
             var values = await _repository.GetByIdAsync(updateAddressCommand.AddressId);
-            values.Detail = updateAddressCommand.Detail;
-            values.District = updateAddressCommand.District;
-            values.City = updateAddressCommand.City;
-            values.UserId = updateAddressCommand.UserId;
-            _repository.Update(values);
-            await _unitOfWork.Commit();
+            if (values != null)
+            {
+                values.Detail = updateAddressCommand.Detail;
+                values.District = updateAddressCommand.District;
+                values.City = updateAddressCommand.City;
+                values.UserId = updateAddressCommand.UserId;
+                _repository.Update(values);
+                await _unitOfWork.Commit();
+            }
+
+            throw new NotFoundIdException(updateAddressCommand.AddressId);
+
         }
     }
 }

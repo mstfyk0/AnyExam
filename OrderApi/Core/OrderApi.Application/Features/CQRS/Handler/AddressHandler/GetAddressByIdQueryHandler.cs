@@ -1,4 +1,5 @@
-﻿using OrderApi.Application.Features.CQRS.Querys.AddressQuerys;
+﻿using OrderApi.Application.Exceptions;
+using OrderApi.Application.Features.CQRS.Querys.AddressQuerys;
 using OrderApi.Application.Features.CQRS.Results.AddressResults;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
@@ -22,14 +23,20 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
         public async Task<GetAddressByIdQueryResult> Handle(GetAddressByIdQuery getAddressByIdQuery)
         {
             var values = await _repository.GetByIdAsync(getAddressByIdQuery.Id);
-            return new GetAddressByIdQueryResult
+
+            if(values != null)
             {
-                AddressId = values.AddressId,
-                City = values.City,
-                District = values.District,
-                Detail = values.Detail,
-                UserId = values.UserId,
-            };
+
+                return new GetAddressByIdQueryResult
+                {
+                    AddressId = values.AddressId,
+                    City = values.City,
+                    District = values.District,
+                    Detail = values.Detail,
+                    UserId = values.UserId,
+                };
+            }
+            throw new NotFoundIdException();
         }
     }
 }

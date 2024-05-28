@@ -12,11 +12,12 @@ namespace OrderApi.Persistence.Services
     public class UnitOfWork : IUnitOfWork
     {
         private readonly OrderContext  _context;
-        private readonly IDbContextTransaction transaction = null;
+        private readonly IDbContextTransaction _transaction = null;
 
         public UnitOfWork(OrderContext context)
         {
             _context = context;
+            _transaction = _context.Database.BeginTransaction();
         }
 
         public int Save() => _context.SaveChanges();
@@ -24,9 +25,9 @@ namespace OrderApi.Persistence.Services
         {
             Save();
             if (state)
-                transaction.Commit();
+                _transaction.Commit();
             else
-                transaction.Rollback();
+                _transaction.Rollback();
 
             Dispose();
             return Task.FromResult(true);

@@ -19,7 +19,7 @@ namespace OrderApi.Persistence.Context
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("SQLConnection"));
         }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Order> Orderings { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
     }
 

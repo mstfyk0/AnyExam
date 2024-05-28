@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.Meditor.Queries.OrderQueries;
 using OrderApi.Application.Features.Meditor.Results.OrderResults;
 using OrderApi.Application.Interfaces;
@@ -20,13 +21,20 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
         public async Task<List<GetOrderQueryResult>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
         {
             var values = await _repository.GetAllAsync();
-            return values.Select(x => new GetOrderQueryResult
+
+            if (values != null)
             {
-                OrderDate = x.OrderDate,
-                OrderId = x.OrderId,
-                TotalPrice=x.TotalPrice,
-                UserId=x.UserId,
-            }).ToList();
+
+                return values.Select(x => new GetOrderQueryResult
+                {
+                    OrderDate = x.OrderDate,
+                    OrderId = x.OrderId,
+                    TotalPrice=x.TotalPrice,
+                    UserId=x.UserId,
+                }).ToList();
+            }
+            throw new NotFoundException();
+
         }
     }
 }

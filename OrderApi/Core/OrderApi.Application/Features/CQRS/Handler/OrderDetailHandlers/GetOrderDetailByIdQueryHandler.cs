@@ -1,4 +1,5 @@
-﻿using OrderApi.Application.Features.CQRS.Querys.OrderDetailQuerys;
+﻿using OrderApi.Application.Exceptions;
+using OrderApi.Application.Features.CQRS.Querys.OrderDetailQuerys;
 using OrderApi.Application.Features.CQRS.Results.OrderDetailResults;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
@@ -22,16 +23,23 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         public async Task<GetOrderDetailByIdQueryResult> Handle(GetOrderDetailByIdQuery getOrderDetailByIdQuery)
         {
             var values = await _repository.GetByIdAsync(getOrderDetailByIdQuery.Id);
-            return new GetOrderDetailByIdQueryResult
+
+            if (values != null)
             {
-                ProductAmount = values.ProductAmount,
-                ProductId = values.ProductId,
-                ProductName = values.ProductName,
-                ProductPrice = values.ProductPrice,
-                ProductTotalPrice = values.ProductTotalPrice,
-                OrderId = values.OrderId,
-                OrderDetailId = values.OrderDetailId,
-            };
+
+                return new GetOrderDetailByIdQueryResult
+                {
+                    ProductAmount = values.ProductAmount,
+                    ProductId = values.ProductId,
+                    ProductName = values.ProductName,
+                    ProductPrice = values.ProductPrice,
+                    ProductTotalPrice = values.ProductTotalPrice,
+                    OrderId = values.OrderId,
+                    OrderDetailId = values.OrderDetailId,
+                };
+            }
+            throw new NotFoundIdException(getOrderDetailByIdQuery.Id);
+
         }
     }
 }

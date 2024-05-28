@@ -1,4 +1,5 @@
-﻿using OrderApi.Application.Features.CQRS.Commands.OrderDetailCommands;
+﻿using OrderApi.Application.Exceptions;
+using OrderApi.Application.Features.CQRS.Commands.OrderDetailCommands;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
 
@@ -20,8 +21,14 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         public async Task Handle(RemoveOrderDetailCommand removeOrderDetailCommand)
         {
             var value = await _repository.GetByIdAsync(removeOrderDetailCommand.Id);
-            _repository.Delete(value);
-            await _unitOfWork.Commit();
+
+            if (value != null) 
+            {
+            
+                _repository.Delete(value);
+                await _unitOfWork.Commit();
+            }
+            throw new NotFoundIdException(removeOrderDetailCommand.Id);
         }
     }
 }

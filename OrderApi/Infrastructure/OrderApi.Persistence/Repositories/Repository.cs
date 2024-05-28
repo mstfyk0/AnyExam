@@ -9,12 +9,11 @@ namespace OrderApi.Persistence.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly OrderContext _context;
-        private readonly IDbContextTransaction _transaction=null;
 
         public Repository(OrderContext context)
         {
             _context = context;
-            _transaction= _context.Database.BeginTransaction();
+           
         }
 
         public void Create(T entity)
