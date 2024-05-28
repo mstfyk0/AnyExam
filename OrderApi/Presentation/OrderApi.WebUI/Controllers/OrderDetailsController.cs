@@ -6,7 +6,7 @@ using OrderApi.Application.Features.CQRS.Querys.OrderDetailQuerys;
 
 namespace OrderApi.WebUI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderDetailsController : ControllerBase

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using OrderApi.Application.Interfaces;
 using OrderApi.Persistence.Context;
 using System.Linq.Expressions;
@@ -39,6 +38,11 @@ namespace OrderApi.Persistence.Repositories
         public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
+        }
+
+        public async Task<T> GetByUserNameAsync(string userName)
+        {
+            return  await _context.Set<T>().FindAsync(userName);
         }
 
         public void Update(T entity)

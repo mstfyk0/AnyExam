@@ -6,7 +6,7 @@ using OrderApi.Application.Features.CQRS.Querys.AddressQuerys;
 
 namespace OrderApi.WebUI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AddressesController : ControllerBase

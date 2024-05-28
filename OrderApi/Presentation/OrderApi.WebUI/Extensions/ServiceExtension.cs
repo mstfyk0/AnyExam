@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Authentication;
 using OrderApi.Application.Features.CQRS.Handler.AddressHandler;
 using OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers;
 using OrderApi.Application.Interfaces;
 using OrderApi.Persistence.Repositories;
 using OrderApi.Persistence.Services;
+using OrderApi.WebUI.Auth;
 
 
 namespace MultiShop.Order.WebApi.Controllers
@@ -26,6 +27,12 @@ namespace MultiShop.Order.WebApi.Controllers
            services.AddScoped<CreateAddressCommandHandler>();
            services.AddScoped<UpdateAddressCommandHandler>();
            services.AddScoped<RemoveAddressCommandHandler>();
+        }
+        public static void AddBasicAuthentication(this IServiceCollection services) 
+        {
+
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
         }
     }
 }
