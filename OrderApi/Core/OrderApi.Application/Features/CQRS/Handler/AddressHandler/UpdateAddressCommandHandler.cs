@@ -1,21 +1,20 @@
 ﻿using OrderApi.Application.Features.CQRS.Commands.AddressCommands;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
 {
     public class UpdateAddressCommandHandler
     {
         private readonly IRepository<Address> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateAddressCommandHandler(IRepository<Address> repository)
+
+        public UpdateAddressCommandHandler(IRepository<Address> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
         public async Task Handle(UpdateAddressCommand updateAddressCommand)
         {
@@ -24,7 +23,8 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
             values.District = updateAddressCommand.District;
             values.City = updateAddressCommand.City;
             values.UserId = updateAddressCommand.UserId;
-            await _repository.UpdateAsync(values);
+            _repository.Update(values);
+            await _unitOfWork.Commit();
         }
     }
 }

@@ -3,6 +3,7 @@
 {
     public interface IUnitOfWork : IDisposable
     { 
-        bool Commit(bool state = true);
+        Task<bool> Commit(bool state = true);
+
     }
 }

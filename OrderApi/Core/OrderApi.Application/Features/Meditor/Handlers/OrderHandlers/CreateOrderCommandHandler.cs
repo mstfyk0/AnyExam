@@ -10,21 +10,25 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
     {
 
         private readonly IRepository<Order> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateOrderCommandHandler(IRepository<Order> repository)
+
+        public CreateOrderCommandHandler(IRepository<Order> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            await _repository.CreateAsync(new Order
+            _repository.Create(new Order
             {
                 OrderDate = request.OrderDate,
                 TotalPrice = request.TotalPrice,
                 UserId = request.UserId,
 
             });
+            await _unitOfWork.Commit();
         }
     }
 }

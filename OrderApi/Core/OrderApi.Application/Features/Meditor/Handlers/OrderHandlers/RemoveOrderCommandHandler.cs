@@ -10,17 +10,20 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
     {
 
         private readonly IRepository<Order> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RemoveOrderCommandHandler(IRepository<Order> repository)
+
+        public RemoveOrderCommandHandler(IRepository<Order> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(RemoveOrderCommand request, CancellationToken cancellationToken)
         {
             var values = await _repository.GetByIdAsync(request.Id);
-            await _repository.DeleteAsync(values);
-
+            _repository.Delete(values);
+            await _unitOfWork.Commit();
         }
     }
 }

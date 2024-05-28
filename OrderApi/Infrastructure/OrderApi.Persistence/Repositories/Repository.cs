@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace OrderApi.Persistence.Repositories
 {
-    public class Repository<T> : IRepository<T> , IUnitOfWork where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly OrderContext _context;
         private readonly IDbContextTransaction _transaction=null;
@@ -17,16 +17,14 @@ namespace OrderApi.Persistence.Repositories
             _transaction= _context.Database.BeginTransaction();
         }
 
-        public Task<bool> CreateAsync(T entity)
+        public void Create(T entity)
         {
             _context.Set<T>().Add(entity);
-            return Task.FromResult(true);
         }
 
-        public Task<bool> DeleteAsync(T entity)
+        public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            return Task.FromResult(true);
         }
 
         public async Task<List<T>> GetAllAsync()
@@ -44,27 +42,9 @@ namespace OrderApi.Persistence.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public Task<bool> UpdateAsync(T entity)
+        public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
-            return Task.FromResult(true);
-        }
-
-        public int Save() => _context.SaveChanges();
-        public bool Commit(bool state = true)
-        {
-            Save();
-            if (state)
-                _transaction.Commit();
-            else
-                _transaction.Rollback();
-
-            Dispose();
-            return true;
-        }
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

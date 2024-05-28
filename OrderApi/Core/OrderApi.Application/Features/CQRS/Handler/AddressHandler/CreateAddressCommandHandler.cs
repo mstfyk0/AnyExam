@@ -8,21 +8,24 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
     public class CreateAddressCommandHandler
     {
         private readonly IRepository<Address> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateAddressCommandHandler(IRepository<Address> repository)
+        public CreateAddressCommandHandler(IRepository<Address> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(CreateAddressCommand createAddressCommand)
         {
-            await _repository.CreateAsync(new Address
+            _repository.Create(new Address
             {
                 City = createAddressCommand.City,
                 District = createAddressCommand.District,
                 Detail = createAddressCommand.Detail,
                 UserId = createAddressCommand.UserId
             });
+            await _unitOfWork.Commit();
         }
     }
 }

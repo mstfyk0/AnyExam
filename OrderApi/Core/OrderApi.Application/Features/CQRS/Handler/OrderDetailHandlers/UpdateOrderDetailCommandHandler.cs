@@ -12,10 +12,13 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
     public class UpdateOrderDetailCommandHandler
     {
         private readonly IRepository<OrderDetail> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateOrderDetailCommandHandler(IRepository<OrderDetail> repository)
+
+        public UpdateOrderDetailCommandHandler(IRepository<OrderDetail> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
         public async Task Handle(UpdateOrderDetailCommand updateOrderDetailCommand)
         {
@@ -27,7 +30,8 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
             values.ProductId = updateOrderDetailCommand.ProductId;
             values.OrderId = updateOrderDetailCommand.OrderId;
             values.ProductAmount = updateOrderDetailCommand.ProductAmount;
-            await _repository.UpdateAsync(values);
+            _repository.Update(values);
+            await _unitOfWork.Commit();
         }
     }
 }

@@ -12,14 +12,17 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
     public class CreateOrderDetailCommandHandler
     {
         private readonly IRepository<OrderDetail> _orderDetailRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateOrderDetailCommandHandler(IRepository<OrderDetail> orderDetailRepository)
+
+        public CreateOrderDetailCommandHandler(IRepository<OrderDetail> orderDetailRepository, IUnitOfWork unitOfWork)
         {
             _orderDetailRepository = orderDetailRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task Handle(CreateOrderDetailCommand createOrderDetailCommand)
         {
-            await _orderDetailRepository.CreateAsync(new OrderDetail
+            _orderDetailRepository.Create(new OrderDetail
             {
                 ProductAmount = createOrderDetailCommand.ProductAmount,
                 ProductId = createOrderDetailCommand.ProductId,
@@ -28,6 +31,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
                 ProductTotalPrice = createOrderDetailCommand.ProductTotalPrice,
                 OrderId = createOrderDetailCommand.OrderId,
             });
+            await _unitOfWork.Commit();
 
         }
     }

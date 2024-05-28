@@ -12,16 +12,20 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
     public class RemoveAddressCommandHandler
     {
         private readonly IRepository<Address> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RemoveAddressCommandHandler(IRepository<Address> repository)
+
+        public RemoveAddressCommandHandler(IRepository<Address> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(RemoveAddressCommand removeAddressCommand)
         {
             var value = await _repository.GetByIdAsync(removeAddressCommand.Id);
-            await _repository.DeleteAsync(value);
+            _repository.Delete(value);
+            await _unitOfWork.Commit();
         }
     }
 }
