@@ -11,9 +11,9 @@ namespace OrderApi.Application.Interfaces
     {
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);   
-        Task CreateAsync(T entity);   
-        Task UpdateAsync(T entity);   
-        Task DeleteAsync(T entity);
+        Task<bool> CreateAsync(T entity);   
+        Task<bool> UpdateAsync(T entity);   
+        Task<bool> DeleteAsync(T entity);
         Task<T> GetByFilterAsync(Expression<Func<T, bool>> filtre);
     }
 }
