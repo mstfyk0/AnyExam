@@ -20,7 +20,7 @@ namespace OrderApi.Persistence.Services
         }
 
         public int Save() => _context.SaveChanges();
-        public bool Commit(bool state = true)
+        public Task<bool> Commit(bool state = true)
         {
             Save();
             if (state)
@@ -29,7 +29,7 @@ namespace OrderApi.Persistence.Services
                 transaction.Rollback();
 
             Dispose();
-            return true;
+            return Task.FromResult(true);
         }
         public void Dispose()
         {

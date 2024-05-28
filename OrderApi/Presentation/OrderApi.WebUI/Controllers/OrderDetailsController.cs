@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MulitShop.Order.Application.Features.CQRS.Commands.OrderDetailCommands;
-using MulitShop.Order.Application.Features.CQRS.Handler.OrderDetailHandlers;
-using MulitShop.Order.Application.Features.CQRS.Querys.OrderDetailQuerys;
+using OrderApi.Application.Features.CQRS.Commands.OrderDetailCommands;
+using OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers;
+using OrderApi.Application.Features.CQRS.Querys.OrderDetailQuerys;
 
-namespace MultiShop.Order.WebApi.Controllers
+namespace OrderApi.WebUI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderDetailsController : ControllerBase
