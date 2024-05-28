@@ -28,7 +28,11 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
                 _repository.Delete(value);
                 await _unitOfWork.Commit();
             }
-            throw new NotFoundIdException(removeOrderDetailCommand.Id);
+            else
+            {
+
+              throw new NotFoundIdException(removeOrderDetailCommand.Id);
+            }
         }
     }
 }

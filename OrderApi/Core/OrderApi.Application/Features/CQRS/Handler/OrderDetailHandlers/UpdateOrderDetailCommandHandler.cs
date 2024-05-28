@@ -25,7 +25,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         {
             var values = await _repository.GetByIdAsync(updateOrderDetailCommand.OrderDetailId);
 
-            if (values !=null)
+            if (values != null)
             {
 
                 values.ProductTotalPrice = updateOrderDetailCommand.ProductTotalPrice;
@@ -37,7 +37,10 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
                 _repository.Update(values);
                 await _unitOfWork.Commit();
             }
-            throw new NotFoundIdException(updateOrderDetailCommand.OrderDetailId);
+            else
+            {
+                throw new NotFoundIdException(updateOrderDetailCommand.OrderDetailId);
+            }
         }
     }
 }

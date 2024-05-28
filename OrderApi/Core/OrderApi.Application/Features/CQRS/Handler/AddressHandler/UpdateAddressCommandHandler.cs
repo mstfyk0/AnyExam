@@ -29,9 +29,10 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
                 _repository.Update(values);
                 await _unitOfWork.Commit();
             }
-
-            throw new NotFoundIdException(updateAddressCommand.AddressId);
-
+            else
+            {
+                throw new NotFoundIdException(updateAddressCommand.AddressId);
+            }
         }
     }
 }

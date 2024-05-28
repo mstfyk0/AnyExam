@@ -31,7 +31,10 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
                 _repository.Delete(value);
                 await _unitOfWork.Commit();
             }
-            throw new NotFoundIdException(removeAddressCommand.Id);
+            else
+            {
+                throw new NotFoundIdException(removeAddressCommand.Id);
+            }
 
         }
     }

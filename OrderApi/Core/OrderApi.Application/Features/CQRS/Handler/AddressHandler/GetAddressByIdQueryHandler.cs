@@ -36,7 +36,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
                     UserId = values.UserId,
                 };
             }
-            throw new NotFoundIdException();
+            throw new NotFoundIdException(getAddressByIdQuery.Id);
         }
     }
 }

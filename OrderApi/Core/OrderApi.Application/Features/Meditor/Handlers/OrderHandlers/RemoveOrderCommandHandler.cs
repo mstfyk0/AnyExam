@@ -30,7 +30,10 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
                 _repository.Delete(values);
                 await _unitOfWork.Commit();
             }
-            throw new NotFoundIdException(request.Id);
+            else
+            {
+                throw new NotFoundIdException(request.Id);
+            }
         }
     }
 }

@@ -33,7 +33,10 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
                 _repository.Update(values);
                 await _unitOfWork.Commit();
             }
-            throw new NotFoundIdException(request.OrderId);
+            else
+            {
+                throw new NotFoundIdException(request.OrderId);
+            }
         }
     }
 }
