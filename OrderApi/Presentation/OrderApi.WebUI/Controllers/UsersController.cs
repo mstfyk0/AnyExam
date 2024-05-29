@@ -1,13 +1,12 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrderApi.Application.Features.Meditor.Command.OrderCommands;
 using OrderApi.Application.Features.Meditor.Command.UserCommands;
 using OrderApi.Application.Features.Meditor.Queries.OrderQueries;
 using OrderApi.Application.Features.Meditor.Queries.UserQueries;
 
 namespace OrderApi.WebUI.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase

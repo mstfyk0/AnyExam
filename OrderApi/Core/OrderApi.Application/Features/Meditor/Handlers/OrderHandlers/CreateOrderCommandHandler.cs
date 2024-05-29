@@ -24,7 +24,7 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
             _repository.Create(new Order
             {
                 OrderDate = request.OrderDate,
-                TotalPrice = request.TotalPrice,
+                AddressId = request.AddressId,
                 UserId = request.UserId,
 
             });

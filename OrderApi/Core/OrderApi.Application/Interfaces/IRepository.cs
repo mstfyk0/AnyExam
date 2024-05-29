@@ -11,6 +11,7 @@ namespace OrderApi.Application.Interfaces
     {
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);   
+        Task<List<T>> GetByIdListAsync(int id);   
         Task<T> GetByUserNameAsync(string userName);   
         void Create(T entity);   
         void Update(T entity);   

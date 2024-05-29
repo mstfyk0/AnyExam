@@ -27,10 +27,6 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
 
             if (values != null)
             {
-
-                values.ProductTotalPrice = updateOrderDetailCommand.ProductTotalPrice;
-                values.ProductPrice = updateOrderDetailCommand.ProductPrice;
-                values.ProductName = updateOrderDetailCommand.ProductName;
                 values.ProductId = updateOrderDetailCommand.ProductId;
                 values.OrderId = updateOrderDetailCommand.OrderId;
                 values.ProductAmount = updateOrderDetailCommand.ProductAmount;

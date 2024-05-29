@@ -11,20 +11,20 @@ using System.Threading.Tasks;
 
 namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
 {
-    public class GetAddressByIdQueryHandler
+    public class GetAddressByUserIdQueryHandler
     {
-        private readonly IRepository<Address> _repository;
+        private readonly IRepository<Address> _addressRepository;
         private readonly IRepository<User> _userRepository;
 
-        public GetAddressByIdQueryHandler(IRepository<Address> repository, IRepository<User> userRepository)
+        public GetAddressByUserIdQueryHandler(IRepository<Address> addressRepository, IRepository<User> userRepository)
         {
-            _repository = repository;
+            _addressRepository = addressRepository;
             _userRepository = userRepository;
         }
 
-        public async Task<GetAddressByIdQueryResult> Handle(GetAddressByIdQuery getAddressByIdQuery)
+        public async Task<GetAddressByUserIdQueryResult> Handle(GetAddressByUserIdQuery getAddressByIdQuery)
         {
-            var values = await _repository.GetByIdAsync(getAddressByIdQuery.Id);
+            var values = await _addressRepository.GetByIdAsync(getAddressByIdQuery.Id);
             var userValues = await _userRepository.GetByIdAsync(values.UserId);
 
             values.User = userValues;    
@@ -32,15 +32,13 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
             if(values != null)
             {
 
-                return new GetAddressByIdQueryResult
+                return new GetAddressByUserIdQueryResult
                 {
                     AddressId = values.AddressId,
                     City = values.City,
                     District = values.District,
                     Detail = values.Detail,
                     UserId = values.UserId,
-                    User = values.User,
-
                 };
             }
             throw new NotFoundIdException(getAddressByIdQuery.Id);

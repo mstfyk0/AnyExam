@@ -27,7 +27,6 @@ namespace OrderApi.Application.Features.Meditor.Handlers.UserHandlers
             if (values != null)
             {
                 values.UserId = request.UserId;
-
                 values.UserName = request.UserName;
                 values.Password = request.Password;
                 _repository.Update(values);

@@ -40,6 +40,11 @@ namespace OrderApi.Persistence.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
+        public async Task<List<T>> GetByIdListAsync(int id)
+        {
+            return await _context.Set<T>().Where(p=> EF.Property<int>(p,"Id") == id ).ToListAsync();
+        }
+
         public async Task<T> GetByUserNameAsync(string userName)
         {
             return  await _context.Set<T>().FindAsync(userName);

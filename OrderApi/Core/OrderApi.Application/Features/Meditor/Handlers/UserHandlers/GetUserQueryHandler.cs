@@ -12,17 +12,22 @@ namespace OrderApi.Application.Features.Meditor.Handlers.UserHandlers
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, List<GetUserQueryResult>>
     {
 
-        private readonly IRepository<User> _repository;
+        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Address> _addressRepository;
 
-        public GetUserQueryHandler(IRepository<User> repository)
+        public GetUserQueryHandler(IRepository<User> userRepository, IRepository<Address> addressRepository)
         {
-            _repository = repository;
+            _userRepository = userRepository;
+            _addressRepository = addressRepository;
         }
 
         public async Task<List<GetUserQueryResult>> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var values = await _repository.GetAllAsync();
-
+            var values = await _userRepository.GetAllAsync();
+            foreach (var value in values) 
+            {
+                value.Addresses = await _addressRepository.GetByIdListAsync(value.UserId);
+            }
             if (values != null)
             {
 
@@ -31,6 +36,7 @@ namespace OrderApi.Application.Features.Meditor.Handlers.UserHandlers
                     UserId = x.UserId,
                     UserName = x.UserName,
                     Password=x.Password,
+                    Addresses = x.Addresses
                 }).ToList();
             }
             throw new NotFoundException();

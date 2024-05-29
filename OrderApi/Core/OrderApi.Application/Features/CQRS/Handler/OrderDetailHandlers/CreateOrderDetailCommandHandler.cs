@@ -26,9 +26,6 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
             {
                 ProductAmount = createOrderDetailCommand.ProductAmount,
                 ProductId = createOrderDetailCommand.ProductId,
-                ProductName = createOrderDetailCommand.ProductName,
-                ProductPrice = createOrderDetailCommand.ProductPrice,
-                ProductTotalPrice = createOrderDetailCommand.ProductTotalPrice,
                 OrderId = createOrderDetailCommand.OrderId,
             });
             await _unitOfWork.Commit();

@@ -26,9 +26,8 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
 
             if (values != null)
             {
-
                 values.OrderDate = request.OrderDate;
-                values.TotalPrice = request.TotalPrice;
+                values.AddressId = request.AddressId;
                 values.UserId = request.UserId;
                 _repository.Update(values);
                 await _unitOfWork.Commit();

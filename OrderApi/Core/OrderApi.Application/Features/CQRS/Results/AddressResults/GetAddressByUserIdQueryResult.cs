@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderApi.Application.Features.CQRS.Commands.AddressCommands
+namespace OrderApi.Application.Features.CQRS.Results.AddressResults
 {
-    public class CreateAddressCommand
+    public class GetAddressByUserIdQueryResult
     {
+        public int AddressId { get; set; }
         public int UserId { get; set; }
         public string District { get; set; }
         public string City { get; set; }

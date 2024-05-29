@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text;
 using MediatR;
-using OrderApi.Application.Features.Meditor.Queries.OrderQueries;
 using OrderApi.Application.Features.Meditor.Queries.UserQueries;
 
 namespace OrderApi.WebUI.Auth
