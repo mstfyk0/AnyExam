@@ -45,7 +45,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
                     OrderDetailId = x.OrderDetailId,
                 }).ToList();
             }
-            throw new NotFoundIdException(getOrderDetailByIdQuery.OrderId);
+            throw new NotFoundIdException(getOrderDetailByIdQuery.Id);
 
         }
     }
