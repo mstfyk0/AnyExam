@@ -1,7 +1,6 @@
 ﻿using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.CQRS.Results.OrderDetailResults;
 using OrderApi.Application.Interfaces;
-using OrderApi.Domain.Dtos.OrderDetailDtos;
 using OrderApi.Domain.Dtos.OrderDtos;
 using OrderApi.Domain.Dtos.ProductDtos;
 using OrderApi.Domain.Entities;
@@ -11,11 +10,11 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
 {
     public class GetOrderDetailQueryHandler
     {
-        private readonly IRepository<GetOrderDetailDto> _orderDetailRepository;
-        private readonly IRepository<GetProductByOrderDetailDto> _productDetailRepository;
-        private readonly IRepository<GetOrderByOrderDetailDto> _orderRepository;
+        private readonly IRepository<OrderDetail> _orderDetailRepository;
+        private readonly IRepository<Product> _productDetailRepository;
+        private readonly IRepository<Order> _orderRepository;
 
-        public GetOrderDetailQueryHandler(IRepository<GetOrderDetailDto> orderDetailRepository, IRepository<GetProductByOrderDetailDto> productDetailRepository, IRepository<GetOrderByOrderDetailDto> orderRepository)
+        public GetOrderDetailQueryHandler(IRepository<OrderDetail> orderDetailRepository, IRepository<Product> productDetailRepository, IRepository<Order> orderRepository)
         {
             _orderDetailRepository = orderDetailRepository;
             _productDetailRepository = productDetailRepository;
@@ -25,23 +24,31 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         public async Task<List<GetOrderDetailQueryResult>> Handle()
         {
             var values = await _orderDetailRepository.GetAllAsync();
-            
-            foreach (var value in values)
-            {
-                value.Order = await _orderRepository.GetByIdAsync(value.OrderId);   
-                value.Product = await _productDetailRepository.GetByIdAsync(value.ProductId);   
-            }
 
             if (values != null)
             {
+                foreach (var value in values)
+                {
+                    value.Order = await _orderRepository.GetByIdAsync(value.OrderId);
+                    value.Product = await _productDetailRepository.GetByIdAsync(value.ProductId);
+                }
 
                 return values.Select(x => new GetOrderDetailQueryResult
                 {
                     OrderDetailId = x.OrderDetailId,
                     OrderId = x.OrderId,
-                    Order  =x.Order,
+                    Order  = new GetOrderByOrderDetailDto
+                    {
+                        AddressId=x.Order.AddressId,
+                        OrderDate=x.Order.OrderDate,
+                        UserId=x.Order.UserId,
+                    },
                     ProductId = x.ProductId,
-                    Product = x.Product,
+                    Product = new GetProductDto
+                    {
+                        ProductName=x.Product.ProductName,
+                        ProductPrice=x.Product.ProductPrice
+                    },
                     ProductAmount = x.ProductAmount
                 }).ToList();
             }

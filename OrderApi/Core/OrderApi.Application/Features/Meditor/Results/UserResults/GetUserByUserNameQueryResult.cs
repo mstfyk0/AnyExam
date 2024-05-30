@@ -1,5 +1,4 @@
 ﻿using OrderApi.Domain.Dtos.AddressDtos;
-using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,6 @@ namespace OrderApi.Application.Features.Meditor.Results.UserResults
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public List<GetAddressByUserDto> Addresses { get; set; }
 
     }
 }

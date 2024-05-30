@@ -1,6 +1,5 @@
 ﻿using OrderApi.Domain.Dtos.OrderDtos;
 using OrderApi.Domain.Dtos.ProductDtos;
-using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,7 @@ namespace OrderApi.Application.Features.CQRS.Results.OrderDetailResults
     {
         public int OrderDetailId { get; set; }
         public int ProductId { get; set; }
-        public GetProductByOrderDetailDto Product { get; set; }
+        public GetProductDto Product { get; set; }
         public int ProductAmount { get; set; }
         public decimal ProductTotalPrice { get => Product.ProductPrice * ProductAmount; }
         public int OrderId { get; set; }

@@ -1,4 +1,7 @@
-﻿namespace OrderApi.Domain.Entities
+﻿using OrderApi.Domain.Dtos.OrderDtos;
+using OrderApi.Domain.Dtos.ProductDtos;
+
+namespace OrderApi.Domain.Entities
 {
     public class OrderDetail
     {
@@ -6,5 +9,8 @@
         public int ProductId { get; set; }  
         public int ProductAmount { get; set; }
         public int OrderId { get; set; }
+        public Product Product { get; set; }
+        public decimal ProductTotalPrice { get => Product.ProductPrice * ProductAmount; }
+        public Order Order { get; set; }
     }
 }

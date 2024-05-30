@@ -1,4 +1,6 @@
-﻿namespace OrderApi.Domain.Entities
+﻿
+
+namespace OrderApi.Domain.Entities
 {
     public class Address
     {
@@ -7,5 +9,6 @@
         public string District { get; set; }
         public string City { get; set; }
         public string Detail { get; set; }
+        public User User { get; set; }
     }
 }

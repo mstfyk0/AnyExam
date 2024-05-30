@@ -54,12 +54,15 @@ namespace OrderApi.WebUI.Auth
             var password = credentials[1];
             var recordedUser = await _mediator.Send(new GetUserByUserNameQuery(username));
 
-            if ((username != recordedUser.UserName && password != recordedUser.Password) ||
-                username!="Admin" && password != "admin123456"
-                )
+            if ( username != "Admin"  && password != "admin123456")
             {
-                return AuthenticateResult.Fail("Authentication failed");
+                if ( username != recordedUser.UserName && password != recordedUser.Password  )
+                {
+                    return AuthenticateResult.Fail("Authentication failed");
+                }
             }
+
+          
 
             var claims = new[]
             {

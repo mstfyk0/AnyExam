@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrderApi.Domain.Dtos.ProductDtos
 {
-    public record GetProductByOrderDetailDto
+    public record GetProductDto
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }

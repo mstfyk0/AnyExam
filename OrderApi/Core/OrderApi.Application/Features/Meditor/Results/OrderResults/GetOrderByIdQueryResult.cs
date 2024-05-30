@@ -1,7 +1,6 @@
 ﻿using OrderApi.Domain.Dtos.AddressDtos;
 using OrderApi.Domain.Dtos.OrderDetailDtos;
 using OrderApi.Domain.Dtos.UserDtos;
-using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

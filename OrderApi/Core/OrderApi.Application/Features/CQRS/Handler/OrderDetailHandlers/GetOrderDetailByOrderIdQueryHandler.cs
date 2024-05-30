@@ -26,16 +26,16 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         {
             var values = await _orderDetailRepository.GetByIdListAsync("Id" ,getOrderDetailByIdQuery.Id);
 
-            List<Product> productList = new List<Product>();
-
-            foreach (var value in values)
-            {
-                productList.Add(await _productRepository.GetByIdAsync(value.ProductId));
-            }
+            
 
             if (values != null)
             {
+                List<Product> productList = new List<Product>();
 
+                foreach (var value in values)
+                {
+                    productList.Add(await _productRepository.GetByIdAsync(value.ProductId));
+                }
                 return values.Select(x => new GetOrderDetailByOrderIdQueryResult
                 {
                     ProductId = x.ProductId,

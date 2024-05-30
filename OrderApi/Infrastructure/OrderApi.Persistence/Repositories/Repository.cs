@@ -14,12 +14,10 @@ namespace OrderApi.Persistence.Repositories
             _context = context;
            
         }
-
         public void Create(T entity)
         {
             _context.Set<T>().Add(entity);
         }
-
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
@@ -47,12 +45,13 @@ namespace OrderApi.Persistence.Repositories
 
         public async Task<T> GetByUserNameAsync(string userName)
         {
-            return  await _context.Set<T>().FindAsync(userName);
+            return  await _context.Set<T>().Where(p => EF.Property<string>(p, "UserName") == userName).FirstOrDefaultAsync();
         }
 
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
         }
+
     }
 }

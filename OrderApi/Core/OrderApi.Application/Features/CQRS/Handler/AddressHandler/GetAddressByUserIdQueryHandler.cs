@@ -24,10 +24,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
 
         public async Task<GetAddressByUserIdQueryResult> Handle(GetAddressByUserIdQuery getAddressByIdQuery)
         {
-            var values = await _addressRepository.GetByIdAsync(getAddressByIdQuery.Id);
-            //var userValues = await _userRepository.GetByIdAsync((int)values.UserId);
-
-            //values.User = userValues;    
+            var values = await _addressRepository.GetByIdAsync(getAddressByIdQuery.Id); 
 
             if(values != null)
             {

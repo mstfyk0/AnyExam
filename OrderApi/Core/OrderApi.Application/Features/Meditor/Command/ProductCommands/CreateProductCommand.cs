@@ -9,7 +9,6 @@ namespace OrderApi.Application.Features.Meditor.Command.ProductCommands
 {
     public class CreateProductCommand : IRequest
     {
-        public int ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal ProductPrice { get; set; }
     }

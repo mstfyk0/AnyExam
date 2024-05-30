@@ -1,5 +1,4 @@
 ﻿using OrderApi.Domain.Dtos.AddressDtos;
-using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

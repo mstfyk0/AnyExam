@@ -6,22 +6,17 @@ using OrderApi.Domain.Dtos.OrderDetailDtos;
 using OrderApi.Domain.Dtos.OrderDtos;
 using OrderApi.Domain.Dtos.ProductDtos;
 using OrderApi.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
 {
     public class GetOrderDetailByIdQueryHandler
     {
-        private readonly IRepository<GetOrderDetailDto> _orderDetailRepository;
-        private readonly IRepository<GetProductByOrderDetailDto> _productRepository;
-        private readonly IRepository<GetOrderByOrderDetailDto> _orderRepository;
+        private readonly IRepository<OrderDetail> _orderDetailRepository;
+        private readonly IRepository<Domain.Entities.Product> _productRepository;
+        private readonly IRepository<Order> _orderRepository;
 
-        public GetOrderDetailByIdQueryHandler(IRepository<GetOrderDetailDto> orderDetailRepository, IRepository<GetProductByOrderDetailDto> productRepository, IRepository<GetOrderByOrderDetailDto> orderRepository)
+        public GetOrderDetailByIdQueryHandler(IRepository<OrderDetail> orderDetailRepository, IRepository<Domain.Entities.Product> productRepository, IRepository<Order> orderRepository)
         {
             _orderDetailRepository = orderDetailRepository;
             _productRepository = productRepository;
@@ -31,20 +26,31 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         public async Task<GetOrderDetailByIdQueryResult> Handle(GetOrderDetailByIdQuery getOrderDetailByIdQuery)
         {
             var values = await _orderDetailRepository.GetByIdAsync(getOrderDetailByIdQuery.Id);
-            values.Product = await _productRepository.GetByIdAsync(values.ProductId);
-            values.Order = await _orderRepository.GetByIdAsync(values.OrderId);
-
+            
             if (values != null)
             {
+                values.Product = await _productRepository.GetByIdAsync(values.ProductId);
+                values.Order = await _orderRepository.GetByIdAsync(values.OrderId);
 
                 return new GetOrderDetailByIdQueryResult
                 {
                     OrderDetailId = values.OrderDetailId,
                     ProductId = values.ProductId,
-                    Product = values.Product,
+                    Product = new Product
+                    {
+                        ProductId = values.ProductId,
+                        ProductName = values.Product.ProductName,
+                        ProductPrice= values.Product.ProductPrice,
+                    },
                     ProductAmount = values.ProductAmount,
                     OrderId = values.OrderId,
-                    Order = values.Order
+                    Order = new GetOrderByOrderDetailDto
+                    {
+                        OrderId= values.OrderId, 
+                        OrderDate= values.Order.OrderDate,
+                        AddressId= values.Order.AddressId,   
+                        UserId = values.Order.UserId    
+                    }
                 };
             }
             throw new NotFoundIdException(getOrderDetailByIdQuery.Id);
