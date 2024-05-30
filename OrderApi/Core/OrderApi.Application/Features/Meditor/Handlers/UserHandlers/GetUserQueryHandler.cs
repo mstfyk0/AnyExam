@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.Meditor.Queries.OrderQueries;
-using OrderApi.Application.Features.Meditor.Results.OrderResults;
 using OrderApi.Application.Features.Meditor.Results.UserResults;
 using OrderApi.Application.Interfaces;
+using OrderApi.Domain.Dtos.AddressDtos;
+using OrderApi.Domain.Dtos.UserDtos;
 using OrderApi.Domain.Entities;
 
 
@@ -12,10 +13,10 @@ namespace OrderApi.Application.Features.Meditor.Handlers.UserHandlers
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, List<GetUserQueryResult>>
     {
 
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Address> _addressRepository;
+        private readonly IRepository<GetUserDto> _userRepository;
+        private readonly IRepository<GetAddressByUserDto> _addressRepository;
 
-        public GetUserQueryHandler(IRepository<User> userRepository, IRepository<Address> addressRepository)
+        public GetUserQueryHandler(IRepository<GetUserDto> userRepository, IRepository<GetAddressByUserDto> addressRepository)
         {
             _userRepository = userRepository;
             _addressRepository = addressRepository;
@@ -26,7 +27,7 @@ namespace OrderApi.Application.Features.Meditor.Handlers.UserHandlers
             var values = await _userRepository.GetAllAsync();
             foreach (var value in values) 
             {
-                value.Addresses = await _addressRepository.GetByIdListAsync(value.UserId);
+                value.Addresses = await _addressRepository.GetByIdListAsync("UserId",value.UserId);
             }
             if (values != null)
             {

@@ -1,6 +1,9 @@
 ﻿using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.CQRS.Results.AddressResults;
+using OrderApi.Application.Features.Meditor.Results.UserResults;
 using OrderApi.Application.Interfaces;
+using OrderApi.Domain.Dtos.AddressDtos;
+using OrderApi.Domain.Dtos.UserDtos;
 using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,10 +15,10 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
 {
     public class GetAddressQueryHandler
     {
-        private readonly IRepository<Address> _repository;
-        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<GetAddressDto> _repository;
+        private readonly IRepository<GetUserByAddressDto> _userRepository;
 
-        public GetAddressQueryHandler(IRepository<Address> repository, IRepository<User> userRepository)
+        public GetAddressQueryHandler(IRepository<GetAddressDto> repository, IRepository<GetUserByAddressDto> userRepository)
         {
             _repository = repository;
             _userRepository = userRepository;
@@ -26,7 +29,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
 
             foreach (var value in values)
             {
-                value.User = await _userRepository.GetByIdAsync(value.UserId);
+                value.User = await _userRepository.GetByIdAsync((int)value.UserId);
             }
 
             if (values != null)
@@ -37,8 +40,8 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
                     City = x.City,
                     Detail = x.Detail,
                     District = x.District,
-                    UserId = x.UserId,
-                    User = x.User 
+                    UserId = (int)x.UserId,
+                    User = x.User
 
             }).ToList();
 

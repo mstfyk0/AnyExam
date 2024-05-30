@@ -1,17 +1,11 @@
 ﻿using OrderApi.Domain.Dtos.AddressDtos;
 using OrderApi.Domain.Dtos.OrderDetailDtos;
 using OrderApi.Domain.Dtos.UserDtos;
-using OrderApi.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
-namespace OrderApi.Application.Features.Meditor.Results.OrderResults
+namespace OrderApi.Domain.Dtos.OrderDtos
 {
-    public class GetOrderByIdQueryResult
+    public record GetOrderDto
     {
         public int OrderId { get; set; }
         public int UserId { get; set; }

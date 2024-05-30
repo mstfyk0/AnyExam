@@ -3,6 +3,10 @@ using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.Meditor.Queries.OrderQueries;
 using OrderApi.Application.Features.Meditor.Results.OrderResults;
 using OrderApi.Application.Interfaces;
+using OrderApi.Domain.Dtos.AddressDtos;
+using OrderApi.Domain.Dtos.OrderDetailDtos;
+using OrderApi.Domain.Dtos.OrderDtos;
+using OrderApi.Domain.Dtos.UserDtos;
 using OrderApi.Domain.Entities;
 
 
@@ -11,13 +15,13 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
     public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, GetOrderByIdQueryResult>
     {
 
-        private readonly IRepository<Order> _orderRepository;
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Address> _addressRepository;
-        private readonly IRepository<OrderDetail> _orderDetailRepository;
+        private readonly IRepository<GetOrderDto> _orderRepository;
+        private readonly IRepository<GetUserByOrderDto> _userRepository;
+        private readonly IRepository<GetAddressByOrderDto> _addressRepository;
+        private readonly IRepository<GetOrderDetailByOrderDto> _orderDetailRepository;
 
 
-        public GetOrderByIdQueryHandler(IRepository<Order> repository, IRepository<User> userRepository, IRepository<Address> addressRepository, IRepository<OrderDetail> orderDetailRepository)
+        public GetOrderByIdQueryHandler(IRepository<GetOrderDto> repository, IRepository<GetUserByOrderDto> userRepository, IRepository<GetAddressByOrderDto> addressRepository, IRepository<GetOrderDetailByOrderDto> orderDetailRepository)
         {
             _orderRepository = repository;
             _userRepository = userRepository;
@@ -29,14 +33,10 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
         {
             var values = await _orderRepository.GetByIdAsync(request.Id);
 
-            var orderAddressValue = await _addressRepository.GetByIdAsync(values.AddressId);   
-            
-            var orderUserValue = await _userRepository.GetByIdAsync(values.UserId);
+            var orderDetailByOrderIdList = await _orderDetailRepository.GetByIdListAsync("OrderId",values.OrderId);
 
-            var orderDetailByOrderIdList = await _orderDetailRepository.GetByIdListAsync(values.OrderId);
-
-            values.Address= orderAddressValue;
-            values.User= orderUserValue;
+            values.Address = await _addressRepository.GetByIdAsync(values.AddressId);
+            values.User = await _userRepository.GetByIdAsync(values.UserId);
 
             foreach (var item in orderDetailByOrderIdList)
             {

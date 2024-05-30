@@ -4,6 +4,10 @@ using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.Meditor.Queries.OrderQueries;
 using OrderApi.Application.Features.Meditor.Results.OrderResults;
 using OrderApi.Application.Interfaces;
+using OrderApi.Domain.Dtos.AddressDtos;
+using OrderApi.Domain.Dtos.OrderDetailDtos;
+using OrderApi.Domain.Dtos.OrderDtos;
+using OrderApi.Domain.Dtos.UserDtos;
 using OrderApi.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,12 +17,12 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
     public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, List<GetOrderQueryResult>>
     {
 
-        private readonly IRepository<Order> _orderRepository;
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Address> _addressRepository;
-        private readonly IRepository<OrderDetail> _orderDetailRepository;
+        private readonly IRepository<GetOrderDto> _orderRepository;
+        private readonly IRepository<GetUserByOrderDto> _userRepository;
+        private readonly IRepository<GetAddressByOrderDto> _addressRepository;
+        private readonly IRepository<GetOrderDetailByOrderDto> _orderDetailRepository;
 
-        public GetOrderQueryHandler(IRepository<Order> repository, IRepository<User> userRepository, IRepository<Address> addressRepository, IRepository<OrderDetail> orderDetailRepository)
+        public GetOrderQueryHandler(IRepository<GetOrderDto> repository, IRepository<GetUserByOrderDto> userRepository, IRepository<GetAddressByOrderDto> addressRepository, IRepository<GetOrderDetailByOrderDto> orderDetailRepository)
         {
             _orderRepository = repository;
             _userRepository = userRepository;
@@ -34,7 +38,7 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
             {
                 value.Address = await _addressRepository.GetByIdAsync(value.AddressId);
                 value.User = await _userRepository.GetByIdAsync(value.UserId);
-                value.OrderDetails = await _orderDetailRepository.GetByIdListAsync(value.OrderId);
+                value.OrderDetails = await _orderDetailRepository.GetByIdListAsync("OrderId",value.OrderId);
             }
 
             if (values != null)

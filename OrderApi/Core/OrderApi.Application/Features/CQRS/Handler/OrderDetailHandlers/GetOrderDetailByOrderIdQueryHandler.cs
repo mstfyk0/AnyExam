@@ -24,7 +24,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
 
         public async Task<List<GetOrderDetailByOrderIdQueryResult>> Handle(GetOrderDetailByOrderIdQuery getOrderDetailByIdQuery)
         {
-            var values = await _orderDetailRepository.GetByIdListAsync(getOrderDetailByIdQuery.Id);
+            var values = await _orderDetailRepository.GetByIdListAsync("Id" ,getOrderDetailByIdQuery.Id);
 
             List<Product> productList = new List<Product>();
 

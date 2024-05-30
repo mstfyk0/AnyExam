@@ -2,6 +2,9 @@
 using OrderApi.Application.Features.CQRS.Querys.OrderDetailQuerys;
 using OrderApi.Application.Features.CQRS.Results.OrderDetailResults;
 using OrderApi.Application.Interfaces;
+using OrderApi.Domain.Dtos.OrderDetailDtos;
+using OrderApi.Domain.Dtos.OrderDtos;
+using OrderApi.Domain.Dtos.ProductDtos;
 using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,11 +17,11 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
 {
     public class GetOrderDetailByIdQueryHandler
     {
-        private readonly IRepository<OrderDetail> _orderDetailRepository;
-        private readonly IRepository<Product> _productRepository;
-        private readonly IRepository<Order> _orderRepository;
+        private readonly IRepository<GetOrderDetailDto> _orderDetailRepository;
+        private readonly IRepository<GetProductByOrderDetailDto> _productRepository;
+        private readonly IRepository<GetOrderByOrderDetailDto> _orderRepository;
 
-        public GetOrderDetailByIdQueryHandler(IRepository<OrderDetail> orderDetailRepository, IRepository<Product> productRepository, IRepository<Order> orderRepository)
+        public GetOrderDetailByIdQueryHandler(IRepository<GetOrderDetailDto> orderDetailRepository, IRepository<GetProductByOrderDetailDto> productRepository, IRepository<GetOrderByOrderDetailDto> orderRepository)
         {
             _orderDetailRepository = orderDetailRepository;
             _productRepository = productRepository;

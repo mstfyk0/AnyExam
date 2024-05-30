@@ -7,17 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace OrderApi.Application.Features.CQRS.Results.OrderDetailResults
+namespace OrderApi.Domain.Dtos.OrderDetailDtos
 {
-    public class GetOrderDetailByIdQueryResult
+    public record GetOrderDetailDto
     {
         public int OrderDetailId { get; set; }
         public int ProductId { get; set; }
-        public GetProductByOrderDetailDto Product { get; set; }    
         public int ProductAmount { get; set; }
-        public decimal ProductTotalPrice { get => Product.ProductPrice * ProductAmount; }
         public int OrderId { get; set; }
+        public GetProductByOrderDetailDto Product { get; set; }
+        public decimal ProductTotalPrice { get => Product.ProductPrice * ProductAmount; }
         public GetOrderByOrderDetailDto Order { get; set; }
     }
 }

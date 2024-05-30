@@ -25,9 +25,9 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
         public async Task<GetAddressByUserIdQueryResult> Handle(GetAddressByUserIdQuery getAddressByIdQuery)
         {
             var values = await _addressRepository.GetByIdAsync(getAddressByIdQuery.Id);
-            var userValues = await _userRepository.GetByIdAsync(values.UserId);
+            //var userValues = await _userRepository.GetByIdAsync((int)values.UserId);
 
-            values.User = userValues;    
+            //values.User = userValues;    
 
             if(values != null)
             {
@@ -38,7 +38,7 @@ namespace OrderApi.Application.Features.CQRS.Handler.AddressHandler
                     City = values.City,
                     District = values.District,
                     Detail = values.Detail,
-                    UserId = values.UserId,
+                    UserId = (int)values.UserId,
                 };
             }
             throw new NotFoundIdException(getAddressByIdQuery.Id);

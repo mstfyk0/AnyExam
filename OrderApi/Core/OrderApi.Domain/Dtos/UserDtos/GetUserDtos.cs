@@ -1,20 +1,17 @@
 ﻿using OrderApi.Domain.Dtos.AddressDtos;
-using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace OrderApi.Application.Features.Meditor.Results.UserResults
+namespace OrderApi.Domain.Dtos.UserDtos
 {
-    public class GetUserQueryResult
+    public record GetUserDto
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public List<GetAddressByUserDto> Addresses { get; set; }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using OrderApi.Domain.Entities;
+﻿using OrderApi.Domain.Dtos.UserDtos;
+using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace OrderApi.Application.Features.CQRS.Results.AddressResults
         public string District { get; set; }
         public string City { get; set; }
         public string Detail { get; set; }
-        public User User { get; set; }
+        public GetUserByAddressDto User { get; set; }
     }
 }

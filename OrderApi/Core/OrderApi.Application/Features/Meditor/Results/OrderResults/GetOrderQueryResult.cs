@@ -1,4 +1,7 @@
-﻿using OrderApi.Domain.Entities;
+﻿using OrderApi.Domain.Dtos.AddressDtos;
+using OrderApi.Domain.Dtos.OrderDetailDtos;
+using OrderApi.Domain.Dtos.UserDtos;
+using OrderApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +16,10 @@ namespace OrderApi.Application.Features.Meditor.Results.OrderResults
         public int OrderId { get; set; }
         public int UserId { get; set; }
         public int AddressId { get; set; }
-        public List<OrderDetail> OrderDetails { get; set; }
-        public decimal TotalPrice { get => OrderDetails?.Sum(p => p.ProductTotalPrice) ?? 0; }
         public DateTime OrderDate { get; set; }
-        public User User { get; set; }
-        public Address Address { get; set; }
+        public List<GetOrderDetailByOrderDto> OrderDetails { get; set; }
+        public decimal TotalPrice { get => OrderDetails?.Sum(p => p.ProductTotalPrice) ?? 0; }
+        public GetUserByOrderDto User { get; set; }
+        public GetAddressByOrderDto Address { get; set; }
     }
 }

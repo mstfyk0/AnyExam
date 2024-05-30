@@ -1,6 +1,9 @@
 ﻿using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.CQRS.Results.OrderDetailResults;
 using OrderApi.Application.Interfaces;
+using OrderApi.Domain.Dtos.OrderDetailDtos;
+using OrderApi.Domain.Dtos.OrderDtos;
+using OrderApi.Domain.Dtos.ProductDtos;
 using OrderApi.Domain.Entities;
 
 
@@ -8,11 +11,11 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
 {
     public class GetOrderDetailQueryHandler
     {
-        private readonly IRepository<OrderDetail> _orderDetailRepository;
-        private readonly IRepository<Product> _productDetailRepository;
-        private readonly IRepository<Order> _orderRepository;
+        private readonly IRepository<GetOrderDetailDto> _orderDetailRepository;
+        private readonly IRepository<GetProductByOrderDetailDto> _productDetailRepository;
+        private readonly IRepository<GetOrderByOrderDetailDto> _orderRepository;
 
-        public GetOrderDetailQueryHandler(IRepository<OrderDetail> orderDetailRepository, IRepository<Product> productDetailRepository, IRepository<Order> orderRepository)
+        public GetOrderDetailQueryHandler(IRepository<GetOrderDetailDto> orderDetailRepository, IRepository<GetProductByOrderDetailDto> productDetailRepository, IRepository<GetOrderByOrderDetailDto> orderRepository)
         {
             _orderDetailRepository = orderDetailRepository;
             _productDetailRepository = productDetailRepository;
