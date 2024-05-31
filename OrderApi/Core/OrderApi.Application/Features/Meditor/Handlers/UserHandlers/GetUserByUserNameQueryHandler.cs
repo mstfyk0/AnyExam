@@ -20,7 +20,7 @@ namespace OrderApi.Application.Features.Meditor.Handlers.UserHandlers
 
         public async Task<GetUserByUserNameQueryResult> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
         {
-            var values = await _userRepository.GetByUserNameAsync(request.UserName);
+            var values = await _userRepository.GetUserByUserNameAsync(request.UserName);
 
             if (values != null)
             {
@@ -31,7 +31,7 @@ namespace OrderApi.Application.Features.Meditor.Handlers.UserHandlers
                     Password=values.Password
                 };
             }
-            return new GetUserByUserNameQueryResult {};
+            return new GetUserByUserNameQueryResult{};
         }
     }
 }

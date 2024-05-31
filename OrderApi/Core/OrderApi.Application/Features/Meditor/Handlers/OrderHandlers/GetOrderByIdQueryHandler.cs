@@ -7,6 +7,7 @@ using OrderApi.Domain.Dtos.AddressDtos;
 using OrderApi.Domain.Dtos.OrderDetailDtos;
 using OrderApi.Domain.Dtos.UserDtos;
 using OrderApi.Domain.Entities;
+using System.Net.Http.Headers;
 
 
 namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
@@ -18,14 +19,16 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Address> _addressRepository;
         private readonly IRepository<OrderDetail> _orderDetailRepository;
+        private readonly IRepository<Product> _productRepository;
 
 
-        public GetOrderByIdQueryHandler(IRepository<Order> repository, IRepository<User> userRepository, IRepository<Address> addressRepository, IRepository<OrderDetail> orderDetailRepository)
+        public GetOrderByIdQueryHandler(IRepository<Order> repository, IRepository<User> userRepository, IRepository<Address> addressRepository, IRepository<OrderDetail> orderDetailRepository, IRepository<Product> productRepository)
         {
             _orderRepository = repository;
             _userRepository = userRepository;
             _addressRepository = addressRepository;
             _orderDetailRepository = orderDetailRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<GetOrderByIdQueryResult> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
@@ -34,17 +37,13 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
 
             if (values != null)
             {
-
+                GetOrderByIdQueryResult getOrderByIdQueryResult;    
                 var orderDetailByOrderIdList = await _orderDetailRepository.GetByIdListAsync("OrderId", values.OrderId);
 
                 values.Address = await _addressRepository.GetByIdAsync(values.AddressId);
                 values.User = await _userRepository.GetByIdAsync(values.UserId);
 
-                foreach (var item in orderDetailByOrderIdList)
-                {
-                    values.OrderDetails.Add(item);
-                }
-                return new GetOrderByIdQueryResult
+                getOrderByIdQueryResult = new GetOrderByIdQueryResult()
                 {
                     OrderDate = values.OrderDate,
                     OrderId = values.OrderId,
@@ -54,26 +53,40 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
                     {
                         UserId = values.UserId,
                         AddressId = values.AddressId,
-                        City=values.Address.City,
-                        Detail=values.Address.Detail,
+                        City = values.Address.City,
+                        Detail = values.Address.Detail,
                         District = values.Address.District
-                    } ,
+                    },
                     User = new GetUserByOrderDto
                     {
                         UserId = values.UserId,
                         UserName = values.User.UserName
 
-                    },
-                    OrderDetails= values.OrderDetails.Select(orderdetail=> new GetOrderDetailByOrderDto
+                    }
+                };
+                
+                if (orderDetailByOrderIdList.Count > 0)
+                {
+                    foreach (var product in values.OrderDetails)
                     {
-                        OrderId = orderdetail.OrderId,   
+                        product.Product = await _productRepository.GetByIdAsync(product.ProductId);
+                    }
+                    getOrderByIdQueryResult.OrderDetails = values.OrderDetails.Select(orderdetail => new GetOrderDetailByOrderDto
+                    {
+                        OrderId = orderdetail.OrderId,
                         Product = orderdetail.Product,
                         ProductAmount = orderdetail.ProductAmount,
                         ProductId = orderdetail.ProductId,
-                        OrderDetailId = orderdetail.OrderDetailId   
-                        
-                    } ).ToList() ,
-                };
+                        OrderDetailId = orderdetail.OrderDetailId
+
+                    }).ToList();
+                }
+                else
+                {
+                    getOrderByIdQueryResult.OrderDetails = null;
+                }
+
+                return getOrderByIdQueryResult;
             }
             throw new NotFoundIdException(request.Id);
         }

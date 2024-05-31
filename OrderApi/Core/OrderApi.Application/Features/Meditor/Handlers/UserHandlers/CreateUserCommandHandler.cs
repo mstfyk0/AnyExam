@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OrderApi.Application.Exceptions;
 using OrderApi.Application.Features.Meditor.Command.UserCommands;
 using OrderApi.Application.Interfaces;
 using OrderApi.Domain.Entities;
@@ -21,12 +22,20 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
 
         public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            _repository.Create(new User
+            var user = await _repository.GetUserByUserNameAsync(request.UserName);
+            if ( user == null)
             {
-                UserName = request.UserName,
-                Password = request.Password,
-            });
-            await _unitOfWork.Commit();
+                _repository.Create(new User
+                {
+                    UserName = request.UserName,
+                    Password = request.Password,
+                });
+                await _unitOfWork.Commit();
+            }
+            else
+            {
+                throw new CustomNotImplementedException();
+            }
         }
     }
 }

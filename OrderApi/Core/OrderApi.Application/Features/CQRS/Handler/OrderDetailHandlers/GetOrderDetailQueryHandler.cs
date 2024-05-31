@@ -39,13 +39,15 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
                     OrderId = x.OrderId,
                     Order  = new GetOrderByOrderDetailDto
                     {
+                        OrderId=x.Order.OrderId,
                         AddressId=x.Order.AddressId,
                         OrderDate=x.Order.OrderDate,
-                        UserId=x.Order.UserId,
+                        UserId=x.Order.UserId
                     },
                     ProductId = x.ProductId,
                     Product = new GetProductDto
                     {
+                        ProductId= x.Product.ProductId,
                         ProductName=x.Product.ProductName,
                         ProductPrice=x.Product.ProductPrice
                     },

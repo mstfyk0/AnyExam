@@ -26,8 +26,6 @@ namespace OrderApi.Application.Features.CQRS.Handler.OrderDetailHandlers
         {
             var values = await _orderDetailRepository.GetByIdListAsync("Id" ,getOrderDetailByIdQuery.Id);
 
-            
-
             if (values != null)
             {
                 List<Product> productList = new List<Product>();

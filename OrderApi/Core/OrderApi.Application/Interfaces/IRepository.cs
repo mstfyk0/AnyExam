@@ -12,7 +12,7 @@ namespace OrderApi.Application.Interfaces
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);   
         Task<List<T>> GetByIdListAsync(string foreignKeyName, int id);   
-        Task<T> GetByUserNameAsync(string userName);   
+        Task<T> GetUserByUserNameAsync(string userName);   
         void Create(T entity);   
         void Update(T entity);   
         void Delete(T entity);

@@ -3,7 +3,7 @@
     public class NotFoundUserNameException : Exception
     {
         public NotFoundUserNameException(string userName)
-        : base($"Girmiş olduğunuz Kullanıcı ado {userName} ye ait kullanıcı bulunmamaktadır.. ")
+        : base($"Girmiş olduğunuz Kullanıcı adına ({userName}) ait kullanıcı bulunmamaktadır.")
         {
         }
     }

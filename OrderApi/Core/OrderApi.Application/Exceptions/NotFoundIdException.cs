@@ -3,7 +3,7 @@
     public class NotFoundIdException : Exception
     {
         public NotFoundIdException(int id)
-        : base($"Girmiş olduğunuz Id {id} ye ait kayıt bulunmamaktadır. ")
+        : base($"Girmiş olduğunuz id ye ( {id} ) ye ait kayıt bulunmamaktadır. ")
         {
         }
     }

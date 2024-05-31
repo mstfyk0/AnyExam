@@ -8,6 +8,7 @@ using OrderApi.Domain.Dtos.OrderDetailDtos;
 using OrderApi.Domain.Dtos.OrderDtos;
 using OrderApi.Domain.Dtos.UserDtos;
 using OrderApi.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
@@ -19,13 +20,15 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Address> _addressRepository;
         private readonly IRepository<OrderDetail> _orderDetailRepository;
+        private readonly IRepository<Product> _productRepository;
 
-        public GetOrderQueryHandler(IRepository<Order> repository, IRepository<User> userRepository, IRepository<Address> addressRepository, IRepository<OrderDetail> orderDetailRepository)
+        public GetOrderQueryHandler(IRepository<Order> repository, IRepository<User> userRepository, IRepository<Address> addressRepository, IRepository<OrderDetail> orderDetailRepository, IRepository<Product> productRepository)
         {
             _orderRepository = repository;
             _userRepository = userRepository;
             _addressRepository = addressRepository;
             _orderDetailRepository = orderDetailRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<List<GetOrderQueryResult>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
@@ -39,6 +42,10 @@ namespace OrderApi.Application.Features.Meditor.Handlers.OrderHandlers
                     value.Address = await _addressRepository.GetByIdAsync(value.AddressId);
                     value.User = await _userRepository.GetByIdAsync(value.UserId);
                     value.OrderDetails = await _orderDetailRepository.GetByIdListAsync("OrderId", value.OrderId);
+                    foreach (var item in value.OrderDetails)
+                    {
+                        item.Product= await _productRepository.GetByIdAsync(item.ProductId);
+                    }
                 }
 
                 return values.Select(x => new GetOrderQueryResult

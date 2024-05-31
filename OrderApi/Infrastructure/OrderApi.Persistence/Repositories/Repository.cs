@@ -43,9 +43,10 @@ namespace OrderApi.Persistence.Repositories
             return await _context.Set<T>().Where(p=> EF.Property<int>(p, foreignKeyName) == id ).ToListAsync();
         }
 
-        public async Task<T> GetByUserNameAsync(string userName)
+        public async Task<T> GetUserByUserNameAsync(string userName)
         {
-            return  await _context.Set<T>().Where(p => EF.Property<string>(p, "UserName") == userName).FirstOrDefaultAsync();
+
+            return await _context.Set<T>().Where(p => EF.Property<string>(p, "UserName") == userName).FirstOrDefaultAsync();
         }
 
         public void Update(T entity)
